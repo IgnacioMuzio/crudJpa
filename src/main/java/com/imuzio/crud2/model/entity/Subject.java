@@ -18,7 +18,7 @@ import java.util.List;
 public class Subject {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty

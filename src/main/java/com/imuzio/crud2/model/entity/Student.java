@@ -20,11 +20,12 @@ import java.util.List;
 public class Student {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty
-    private String name;
+    @Column(name="first_name")
+    private String firstName;
 
     @NotEmpty
     @Column(name="last_name")
