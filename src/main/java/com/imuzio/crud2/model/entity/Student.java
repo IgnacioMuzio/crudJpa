@@ -1,7 +1,7 @@
 package com.imuzio.crud2.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -23,19 +23,18 @@ public class Student {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty
+    @NotEmpty(message = "FirstName is needed")
     @Column(name="first_name")
     private String firstName;
 
-    @NotEmpty
+    @NotEmpty(message = "LastName is needed")
     @Column(name="last_name")
     private String lastName;
 
-    @NotEmpty
-    @Column(unique = true)
-    @Size(min = 10,max = 10)
+    @NotEmpty(message = "Dni is needed")
+    @Size(min = 8,max = 8)
     private String dni;
 
-    @OneToMany (mappedBy ="student", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany (mappedBy ="student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<StudentSubject> subjects;
 }

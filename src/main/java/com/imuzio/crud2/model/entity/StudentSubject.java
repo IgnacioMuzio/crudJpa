@@ -1,13 +1,14 @@
 package com.imuzio.crud2.model.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -15,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "student_subject")
-public class StudentSubject {
+public class StudentSubject implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +29,11 @@ public class StudentSubject {
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @JsonIgnore
     private Student student;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
+    @JsonIgnore
     private Subject subject;
 }
