@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 public interface StudentsGradeProjection {
 
-    @Value("#{target.firstName + ' ' +  target.lastName}")
+    @Value("#{target.first_name + ' ' +  target.last_name}")
     String getFirstNameAndLastName();
 
-    @Value("#{grade}")
+    @Value("#{target.grade}")
     Float getGrade();
 }

@@ -1,100 +1,33 @@
 package com.imuzio.crud2.service;
 
-
 import com.imuzio.crud2.exceptions.DuplicatedNameSubjectException;
 import com.imuzio.crud2.exceptions.DuplicatedSubjectInStudentException;
 import com.imuzio.crud2.exceptions.StudentNotFoundException;
 import com.imuzio.crud2.exceptions.SubjectNotFoundException;
 import com.imuzio.crud2.model.dto.SubjectDto;
-import com.imuzio.crud2.model.entity.Student;
 import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.model.entity.Subject;
-import com.imuzio.crud2.repository.StudentRepository;
-import com.imuzio.crud2.repository.StudentSubjectRepository;
-import com.imuzio.crud2.repository.SubjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.imuzio.crud2.projection.StudentsGradeProjection;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
-@Service
-public class SubjectService {
+public interface SubjectService {
 
-    @Autowired
-    private SubjectRepository subjectRepository;
+    List<SubjectDto> getSubjects();
 
-    @Autowired
-    private StudentSubjectRepository studentSubjectRepository;
+    SubjectDto getSubjectById(Integer id) throws SubjectNotFoundException;
+    Subject save (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException;
 
-    @Autowired
-    private StudentRepository studentRepository;
+    void delete(Integer id);
 
-    public List<SubjectDto> getSubjects(){
-        return subjectRepository.findAll().stream().map(this::subjectDtoBuilder).toList();
-    }
+    SubjectDto subjectDtoBuilder(Subject subject);
 
-    public SubjectDto getSubjectById(Integer id) throws SubjectNotFoundException {
-        Optional<Subject> subject = subjectRepository.findById(id);
+    Subject subjectBuilder(SubjectDto subjectDto, Integer id);
 
-        if(!subject.isPresent()){
-            throw new SubjectNotFoundException("Subject is not available");
-        }
-        return subjectDtoBuilder(subject.get());
-    }
+    void checkName (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException;
 
-    public Subject save (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException {
-        checkName(subjectDto,id);
-        Subject subject = subjectBuilder(subjectDto,id);
-        return subjectRepository.save(subject);
-    }
+    List<StudentSubject> addStudent(Integer subjectId, Integer studentId, Float grade) throws StudentNotFoundException, SubjectNotFoundException, DuplicatedSubjectInStudentException;
 
-    public void delete(Integer id){
-        subjectRepository.deleteById(id);
-    }
-
-    private SubjectDto subjectDtoBuilder(Subject subject){
-        SubjectDto subjectDto = new SubjectDto();
-
-        subjectDto.setName(subject.getName());
-
-        return subjectDto;
-    }
-
-    private Subject subjectBuilder(SubjectDto subjectDto, Integer id) {
-        Subject subject = new Subject();
-
-        subject.setId(id);
-        subject.setName(subjectDto.getName());
-
-        return subject;
-    }
-
-    private void checkName (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException {
-        List <Subject> subjects = subjectRepository.findAll();
-        for(Subject subject : subjects){
-            if(subjectDto.getName().equals(subject.getName()) && !Objects.equals(id, subject.getId())){
-                throw new DuplicatedNameSubjectException("Subject name already in use...");
-            }
-        }
-    }
-
-    public List<StudentSubject> addStudent(Integer subjectId, Integer studentId, Float grade) throws StudentNotFoundException, SubjectNotFoundException, DuplicatedSubjectInStudentException {
-        Subject subject = subjectBuilder(getSubjectById(subjectId),subjectId);
-        Student student = studentRepository.findById(studentId).orElseThrow(()-> new StudentNotFoundException("Student is not found"));
-        if(!studentSubjectRepository.findByStudentIdAndSubjectId(studentId,subjectId).isEmpty()){
-            throw new DuplicatedSubjectInStudentException("Student is already related ");
-        }
-        StudentSubject studentSubject = new StudentSubject();
-        studentSubject.setStudent(student);
-        studentSubject.setSubject(subject);
-        studentSubject.setGrade(grade);
-
-        subject.getStudents().add(studentSubject);
-
-        subjectRepository.save(subject);
-
-        return subject.getStudents();
-    }
+    List<StudentsGradeProjection> getStudentsGrades (String subjectName) throws SubjectNotFoundException;
 }

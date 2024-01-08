@@ -7,7 +7,9 @@ import com.imuzio.crud2.exceptions.SubjectNotFoundException;
 import com.imuzio.crud2.model.dto.SubjectDto;
 import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.model.entity.Subject;
+import com.imuzio.crud2.projection.StudentsGradeProjection;
 import com.imuzio.crud2.service.SubjectService;
+import com.imuzio.crud2.service.impl.SubjectServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,8 +40,8 @@ public class SubjectController {
     }
 
     @PutMapping("/{subjectId}")
-    public void update (@Valid @RequestBody SubjectDto subjectDto, @PathVariable("subjectId") Integer id) throws DuplicatedNameSubjectException {
-        subjectService.save(subjectDto,id);
+    public ResponseEntity<Subject> update (@Valid @RequestBody SubjectDto subjectDto, @PathVariable("subjectId") Integer id) throws DuplicatedNameSubjectException {
+        return new ResponseEntity<Subject>(subjectService.save(subjectDto,id),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{subjectId}")
@@ -47,8 +49,13 @@ public class SubjectController {
         subjectService.delete(id);
     }
 
-    @PostMapping("/addStudent/{subjectId}/{studentId}/{grade}")
+    @PutMapping("/addStudent/{subjectId}/{studentId}/{grade}")
     public ResponseEntity<List<StudentSubject>> addSubject( @PathVariable("subjectId") Integer subjectId,@PathVariable("studentId") Integer studentId, @PathVariable("grade") Float grade) throws SubjectNotFoundException, DuplicatedSubjectInStudentException, StudentNotFoundException {
         return new ResponseEntity<List<StudentSubject>>(subjectService.addStudent(subjectId,studentId,grade),HttpStatus.CREATED);
+    }
+
+    @GetMapping("/studentgrade/{subjectName}")
+    public ResponseEntity<List<StudentsGradeProjection>> getStudentsGrades (@PathVariable("subjectName") String subjectName) throws SubjectNotFoundException {
+        return new ResponseEntity<List<StudentsGradeProjection>>(subjectService.getStudentsGrades(subjectName),HttpStatus.OK);
     }
 }

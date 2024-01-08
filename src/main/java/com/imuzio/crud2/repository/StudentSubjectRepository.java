@@ -14,13 +14,10 @@ import java.util.List;
 @Repository
 public interface StudentSubjectRepository extends JpaRepository<StudentSubject,Integer> {
 
-    @Query("Select stu.firstName,stu.lastName,ss.grade from Student stu join StudentSubject ss on stu.id= ss.student.id where ss.subject.id = ?1")
+    @Query(value = "Select stu.first_name,stu.last_name,sis.grade from students stu join student_subject sis on sis.student_id = stu.id where sis.subject_id = :id", nativeQuery = true)
     List<StudentsGradeProjection> getStudentsGradesBySubjectId(Integer id);
 
-    @Query("SELECT sub.name, ss.grade " +
-            "FROM Subject sub " +
-            "JOIN StudentSubject ss ON sub.id = ss.subject.id " +
-            "WHERE ss.student.id = ?1")
+    @Query(value = "Select sub.name,sis.grade from subjects sub join student_subject sis on sis.subject_id = sub.id where sis.student_id = :id", nativeQuery = true)
     List<SubjectsGradeProjection> getSubjectsGradesByStudentId(Integer id);
 
     @Query("Select ss from StudentSubject ss where ss.student.id = ?1 and ss.subject.id = ?2")

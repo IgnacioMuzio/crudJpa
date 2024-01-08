@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping (path = "/students")
@@ -50,8 +49,13 @@ public class StudentController {
         studentService.delete(id);
     }
 
-    @PostMapping("/addSubject/{studentId}/{subjectId}/{grade}")
+    @PutMapping("/addSubject/{studentId}/{subjectId}/{grade}")
     public ResponseEntity<List<StudentSubject>> addSubject(@PathVariable("studentId") Integer studentId, @PathVariable("subjectId") Integer subjectId, @PathVariable("grade") Float grade) throws SubjectNotFoundException, DuplicatedSubjectInStudentException, StudentNotFoundException {
         return new ResponseEntity<List<StudentSubject>>(studentService.addSubject(studentId,subjectId,grade),HttpStatus.CREATED);
+    }
+
+    @GetMapping("/subjectgrade/{studentId}")
+    public ResponseEntity<List<SubjectsGradeProjection>> getStudentsGrades (@PathVariable("studentId") Integer studentId) throws StudentNotFoundException {
+        return new ResponseEntity<List<SubjectsGradeProjection>>(studentService.getSubjectsGrade(studentId),HttpStatus.OK);
     }
 }
