@@ -6,4 +6,7 @@ public interface SubjectsGradeProjection {
 
     @Value("#{target.name}")
     String getName();
+
+    @Value("#{target.grade}")
+    Float getGrade();
 }

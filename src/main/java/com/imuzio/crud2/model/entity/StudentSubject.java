@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class StudentSubject implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty(message = "Grade is mandatory")
+    @NotNull(message = "Grade is mandatory")
     @Min(value = 1, message = "The grade has to be higher or equal to 1")
     @Max(value = 10, message = "The grade has to be lower or equal to 10")
     private Float grade;

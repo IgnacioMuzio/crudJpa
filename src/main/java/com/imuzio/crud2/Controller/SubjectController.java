@@ -1,8 +1,11 @@
 package com.imuzio.crud2.Controller;
 
 import com.imuzio.crud2.exceptions.DuplicatedNameSubjectException;
+import com.imuzio.crud2.exceptions.DuplicatedSubjectInStudentException;
+import com.imuzio.crud2.exceptions.StudentNotFoundException;
 import com.imuzio.crud2.exceptions.SubjectNotFoundException;
 import com.imuzio.crud2.model.dto.SubjectDto;
+import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.model.entity.Subject;
 import com.imuzio.crud2.service.SubjectService;
 import jakarta.validation.Valid;
@@ -42,5 +45,10 @@ public class SubjectController {
     @DeleteMapping("/{subjectId}")
     public void delete(@PathVariable("subjectId") Integer id){
         subjectService.delete(id);
+    }
+
+    @PostMapping("/addStudent/{subjectId}/{studentId}/{grade}")
+    public ResponseEntity<List<StudentSubject>> addSubject( @PathVariable("subjectId") Integer subjectId,@PathVariable("studentId") Integer studentId, @PathVariable("grade") Float grade) throws SubjectNotFoundException, DuplicatedSubjectInStudentException, StudentNotFoundException {
+        return new ResponseEntity<List<StudentSubject>>(subjectService.addStudent(subjectId,studentId,grade),HttpStatus.CREATED);
     }
 }

@@ -1,22 +1,34 @@
 package com.imuzio.crud2.service;
 
 import com.imuzio.crud2.exceptions.DuplicatedDniStudentException;
+import com.imuzio.crud2.exceptions.DuplicatedSubjectInStudentException;
 import com.imuzio.crud2.exceptions.StudentNotFoundException;
+import com.imuzio.crud2.exceptions.SubjectNotFoundException;
 import com.imuzio.crud2.model.dto.StudentDto;
+import com.imuzio.crud2.model.dto.SubjectDto;
 import com.imuzio.crud2.model.entity.Student;
+import com.imuzio.crud2.model.entity.StudentSubject;
+import com.imuzio.crud2.model.entity.Subject;
+import com.imuzio.crud2.projection.SubjectsGradeProjection;
 import com.imuzio.crud2.repository.StudentRepository;
+import com.imuzio.crud2.repository.StudentSubjectRepository;
+import com.imuzio.crud2.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private SubjectRepository subjectRepository;
+
+    @Autowired
+    private StudentSubjectRepository studentSubjectRepository;
 
     public List <StudentDto> getStudents(){
         return studentRepository.findAll().stream().map(this::studentDtoBuilder).toList();
@@ -51,7 +63,7 @@ public class StudentService {
         return studentDto;
     }
 
-    private Student studentBuilder(StudentDto studentDto, Integer id) throws DuplicatedDniStudentException {
+    private Student studentBuilder(StudentDto studentDto, Integer id){
         Student student = new Student();
 
         student.setId(id);
@@ -69,5 +81,23 @@ public class StudentService {
                 throw new DuplicatedDniStudentException("Dni number already in use...");
             }
         }
+    }
+
+    public List<StudentSubject> addSubject(Integer studentId, Integer subjectId, Float grade) throws StudentNotFoundException, SubjectNotFoundException, DuplicatedSubjectInStudentException {
+        Student student = studentBuilder(getStudentById(studentId),studentId);
+        Subject subject = subjectRepository.findById(subjectId).orElseThrow(()->new SubjectNotFoundException("Subject not found"));
+        if(!studentSubjectRepository.findByStudentIdAndSubjectId(studentId,subjectId).isEmpty()){
+            throw new DuplicatedSubjectInStudentException("Subject is already related ");
+        }
+        StudentSubject studentSubject = new StudentSubject();
+        studentSubject.setStudent(student);
+        studentSubject.setSubject(subject);
+        studentSubject.setGrade(grade);
+
+        student.getSubjects().add(studentSubject);
+
+        studentRepository.save(student);
+
+        return student.getSubjects();
     }
 }

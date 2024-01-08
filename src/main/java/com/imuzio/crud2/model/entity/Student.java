@@ -6,13 +6,13 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.NumberFormat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Table(name = "students")
@@ -31,4 +31,7 @@ public class Student {
     @OneToMany (mappedBy ="student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<StudentSubject> subjects;
 
+    public Student() {
+        subjects = new ArrayList<>();
+    }
 }

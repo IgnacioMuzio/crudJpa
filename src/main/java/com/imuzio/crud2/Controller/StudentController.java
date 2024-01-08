@@ -1,9 +1,13 @@
 package com.imuzio.crud2.Controller;
 
 import com.imuzio.crud2.exceptions.DuplicatedDniStudentException;
+import com.imuzio.crud2.exceptions.DuplicatedSubjectInStudentException;
 import com.imuzio.crud2.exceptions.StudentNotFoundException;
+import com.imuzio.crud2.exceptions.SubjectNotFoundException;
 import com.imuzio.crud2.model.dto.StudentDto;
 import com.imuzio.crud2.model.entity.Student;
+import com.imuzio.crud2.model.entity.StudentSubject;
+import com.imuzio.crud2.projection.SubjectsGradeProjection;
 import com.imuzio.crud2.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping (path = "/students")
@@ -43,5 +48,10 @@ public class StudentController {
     @DeleteMapping("/{studentId}")
     public void delete(@PathVariable("studentId") Integer id){
         studentService.delete(id);
+    }
+
+    @PostMapping("/addSubject/{studentId}/{subjectId}/{grade}")
+    public ResponseEntity<List<StudentSubject>> addSubject(@PathVariable("studentId") Integer studentId, @PathVariable("subjectId") Integer subjectId, @PathVariable("grade") Float grade) throws SubjectNotFoundException, DuplicatedSubjectInStudentException, StudentNotFoundException {
+        return new ResponseEntity<List<StudentSubject>>(studentService.addSubject(studentId,subjectId,grade),HttpStatus.CREATED);
     }
 }
