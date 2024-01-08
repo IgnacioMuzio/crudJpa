@@ -10,6 +10,7 @@ import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.projection.SubjectsGradeProjection;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
 
@@ -29,5 +30,5 @@ public interface StudentService {
 
     List<StudentSubject> addSubject(Integer studentId, Integer subjectId, Float grade) throws StudentNotFoundException, SubjectNotFoundException, DuplicatedSubjectInStudentException;
 
-    List<SubjectsGradeProjection> getSubjectsGrade (Integer id) throws StudentNotFoundException;
+    Map<String,List<SubjectsGradeProjection>> getSubjectsGrade (Integer id) throws StudentNotFoundException;
 }

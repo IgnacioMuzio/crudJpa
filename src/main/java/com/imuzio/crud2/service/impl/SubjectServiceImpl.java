@@ -10,6 +10,7 @@ import com.imuzio.crud2.model.entity.Student;
 import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.model.entity.Subject;
 import com.imuzio.crud2.projection.StudentsGradeProjection;
+import com.imuzio.crud2.projection.SubjectsGradeProjection;
 import com.imuzio.crud2.repository.StudentRepository;
 import com.imuzio.crud2.repository.StudentSubjectRepository;
 import com.imuzio.crud2.repository.SubjectRepository;
@@ -17,10 +18,7 @@ import com.imuzio.crud2.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
@@ -101,10 +99,12 @@ public class SubjectServiceImpl implements SubjectService {
         return subject.getStudents();
     }
 
-    public List<StudentsGradeProjection> getStudentsGrades (String subjectName) throws SubjectNotFoundException {
+    public Map<String,List<StudentsGradeProjection>> getStudentsGrades (String subjectName) throws SubjectNotFoundException {
         Subject subject = subjectRepository.findByName(subjectName).orElseThrow(()->new SubjectNotFoundException("Subject "+ subjectName + "not found"));
         List<StudentsGradeProjection> studentsGrades = new ArrayList<>();
         studentsGrades.addAll(studentSubjectRepository.getStudentsGradesBySubjectId(subject.getId()));
-        return  studentsGrades;
+        Map<String,List<StudentsGradeProjection>> map = new HashMap<>();
+        map.put(subjectName,studentsGrades);
+        return  map;
     }
 }

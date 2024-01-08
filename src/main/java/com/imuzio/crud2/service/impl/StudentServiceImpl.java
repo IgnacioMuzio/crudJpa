@@ -101,10 +101,12 @@ public class StudentServiceImpl implements StudentService {
         return student.getSubjects();
     }
 
-    public List<SubjectsGradeProjection> getSubjectsGrade (Integer id) throws StudentNotFoundException {
+    public Map<String,List<SubjectsGradeProjection>> getSubjectsGrade (Integer id) throws StudentNotFoundException {
         Student student = studentBuilder(getStudentById(id),id);
         List<SubjectsGradeProjection> subjectGrades = new ArrayList<>();
         subjectGrades.addAll(studentSubjectRepository.getSubjectsGradesByStudentId(student.getId()));
-        return  subjectGrades;
+        Map<String,List<SubjectsGradeProjection>> map = new HashMap<>();
+        map.put(student.getFirstName()+ " " + student.getLastName(),subjectGrades);
+        return map;
     }
 }

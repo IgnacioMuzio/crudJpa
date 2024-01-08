@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping (path = "/students")
@@ -55,7 +56,7 @@ public class StudentController {
     }
 
     @GetMapping("/subjectgrade/{studentId}")
-    public ResponseEntity<List<SubjectsGradeProjection>> getStudentsGrades (@PathVariable("studentId") Integer studentId) throws StudentNotFoundException {
-        return new ResponseEntity<List<SubjectsGradeProjection>>(studentService.getSubjectsGrade(studentId),HttpStatus.OK);
+    public ResponseEntity<Map<String,List<SubjectsGradeProjection>>> getSubjectGrades (@PathVariable("studentId") Integer studentId) throws StudentNotFoundException {
+        return new ResponseEntity<Map<String,List<SubjectsGradeProjection>>>(studentService.getSubjectsGrade(studentId),HttpStatus.OK);
     }
 }

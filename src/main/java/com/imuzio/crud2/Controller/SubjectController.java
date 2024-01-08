@@ -8,6 +8,7 @@ import com.imuzio.crud2.model.dto.SubjectDto;
 import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.model.entity.Subject;
 import com.imuzio.crud2.projection.StudentsGradeProjection;
+import com.imuzio.crud2.projection.SubjectsGradeProjection;
 import com.imuzio.crud2.service.SubjectService;
 import com.imuzio.crud2.service.impl.SubjectServiceImpl;
 import jakarta.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/subjects")
@@ -55,7 +57,7 @@ public class SubjectController {
     }
 
     @GetMapping("/studentgrade/{subjectName}")
-    public ResponseEntity<List<StudentsGradeProjection>> getStudentsGrades (@PathVariable("subjectName") String subjectName) throws SubjectNotFoundException {
-        return new ResponseEntity<List<StudentsGradeProjection>>(subjectService.getStudentsGrades(subjectName),HttpStatus.OK);
+    public ResponseEntity<Map<String,List<StudentsGradeProjection>>> getStudentsGrades (@PathVariable("subjectName") String subjectName) throws SubjectNotFoundException {
+        return new ResponseEntity<Map<String,List<StudentsGradeProjection>>>(subjectService.getStudentsGrades(subjectName),HttpStatus.OK);
     }
 }
