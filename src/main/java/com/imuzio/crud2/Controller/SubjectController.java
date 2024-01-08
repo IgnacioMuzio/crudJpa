@@ -1,6 +1,8 @@
 package com.imuzio.crud2.Controller;
 
+import com.imuzio.crud2.exceptions.DuplicatedNameSubjectException;
 import com.imuzio.crud2.exceptions.SubjectNotFoundException;
+import com.imuzio.crud2.model.dto.SubjectDto;
 import com.imuzio.crud2.model.entity.Subject;
 import com.imuzio.crud2.service.SubjectService;
 import jakarta.validation.Valid;
@@ -18,23 +20,23 @@ public class SubjectController {
     private SubjectService subjectService;
 
     @GetMapping
-    public ResponseEntity<List<Subject>> getAll(){
-        return new ResponseEntity<List<Subject>>(subjectService.getSubjects(), HttpStatus.OK);
+    public ResponseEntity<List<SubjectDto>> getAll(){
+        return new ResponseEntity<List<SubjectDto>>(subjectService.getSubjects(), HttpStatus.OK);
     }
 
     @GetMapping("/{subjectId}")
-    public ResponseEntity<Subject> getById(@PathVariable("subjectId") Integer id) throws SubjectNotFoundException {
-        return new ResponseEntity<Subject>(subjectService.getSubjectById(id),HttpStatus.OK);
+    public ResponseEntity<SubjectDto> getById(@PathVariable("subjectId") Integer id) throws SubjectNotFoundException {
+        return new ResponseEntity<SubjectDto>(subjectService.getSubjectById(id),HttpStatus.OK);
     }
 
-    @PostMapping(value = "/create",consumes={"application/json"})
-    public ResponseEntity<Subject> create(@Valid @RequestBody Subject subject){
-        return new ResponseEntity<Subject>(subjectService.save(subject),HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<Subject> create(@Valid @RequestBody SubjectDto subjectDto) throws DuplicatedNameSubjectException {
+        return new ResponseEntity<Subject>(subjectService.save(subjectDto,null),HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{subjectId}")
-    public void update (@RequestBody Subject subject){
-        subjectService.save(subject);
+    @PutMapping("/{subjectId}")
+    public void update (@Valid @RequestBody SubjectDto subjectDto, @PathVariable("subjectId") Integer id) throws DuplicatedNameSubjectException {
+        subjectService.save(subjectDto,id);
     }
 
     @DeleteMapping("/{subjectId}")
