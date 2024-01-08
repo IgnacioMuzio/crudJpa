@@ -1,14 +1,13 @@
 package com.imuzio.crud2.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.NumberFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -22,8 +21,10 @@ public class Student {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name="first_name")
     private String firstName;
 
+    @Column(name="last_name")
     private String lastName;
 
     private Integer dni;
