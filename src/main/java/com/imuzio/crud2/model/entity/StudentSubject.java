@@ -24,7 +24,7 @@ public class StudentSubject implements Serializable {
 
     @NotEmpty(message = "Grade is mandatory")
     @Min(value = 1, message = "The grade has to be higher or equal to 1")
-    @Max(value = 10, message = "The grade has to be lower or equal to 1")
+    @Max(value = 10, message = "The grade has to be lower or equal to 10")
     private Float grade;
 
     @ManyToOne
