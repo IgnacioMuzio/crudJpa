@@ -2,9 +2,15 @@ package com.imuzio.crud2.service;
 
 
 import com.imuzio.crud2.exceptions.DuplicatedNameSubjectException;
+import com.imuzio.crud2.exceptions.DuplicatedSubjectInStudentException;
+import com.imuzio.crud2.exceptions.StudentNotFoundException;
 import com.imuzio.crud2.exceptions.SubjectNotFoundException;
 import com.imuzio.crud2.model.dto.SubjectDto;
+import com.imuzio.crud2.model.entity.Student;
+import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.model.entity.Subject;
+import com.imuzio.crud2.repository.StudentRepository;
+import com.imuzio.crud2.repository.StudentSubjectRepository;
 import com.imuzio.crud2.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +24,12 @@ public class SubjectService {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    @Autowired
+    private StudentSubjectRepository studentSubjectRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     public List<SubjectDto> getSubjects(){
         return subjectRepository.findAll().stream().map(this::subjectDtoBuilder).toList();
@@ -66,5 +78,23 @@ public class SubjectService {
                 throw new DuplicatedNameSubjectException("Subject name already in use...");
             }
         }
+    }
+
+    public List<StudentSubject> addStudent(Integer subjectId, Integer studentId, Float grade) throws StudentNotFoundException, SubjectNotFoundException, DuplicatedSubjectInStudentException {
+        Subject subject = subjectBuilder(getSubjectById(subjectId),subjectId);
+        Student student = studentRepository.findById(studentId).orElseThrow(()-> new StudentNotFoundException("Student is not found"));
+        if(!studentSubjectRepository.findByStudentIdAndSubjectId(studentId,subjectId).isEmpty()){
+            throw new DuplicatedSubjectInStudentException("Student is already related ");
+        }
+        StudentSubject studentSubject = new StudentSubject();
+        studentSubject.setStudent(student);
+        studentSubject.setSubject(subject);
+        studentSubject.setGrade(grade);
+
+        subject.getStudents().add(studentSubject);
+
+        subjectRepository.save(subject);
+
+        return subject.getStudents();
     }
 }

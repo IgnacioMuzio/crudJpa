@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "subjects")
 @Builder
@@ -24,4 +24,8 @@ public class Subject {
 
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List <StudentSubject> students;
+
+    public Subject() {
+        students = new ArrayList<>();
+    }
 }
