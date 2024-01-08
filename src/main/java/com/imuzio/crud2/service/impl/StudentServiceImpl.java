@@ -101,8 +101,8 @@ public class StudentServiceImpl implements StudentService {
         return student.getSubjects();
     }
 
-    public Map<String,List<SubjectsGradeProjection>> getSubjectsGrade (Integer id) throws StudentNotFoundException {
-        Student student = studentBuilder(getStudentById(id),id);
+    public Map<String,List<SubjectsGradeProjection>> getSubjectsGrade (Integer dni) throws StudentNotFoundException {
+        Student student = studentRepository.findByDni(dni).orElseThrow(()->new StudentNotFoundException("Student with dni number: " + dni + "was not found"));
         List<SubjectsGradeProjection> subjectGrades = new ArrayList<>();
         subjectGrades.addAll(studentSubjectRepository.getSubjectsGradesByStudentId(student.getId()));
         Map<String,List<SubjectsGradeProjection>> map = new HashMap<>();

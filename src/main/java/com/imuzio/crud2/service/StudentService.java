@@ -30,5 +30,5 @@ public interface StudentService {
 
     List<StudentSubject> addSubject(Integer studentId, Integer subjectId, Float grade) throws StudentNotFoundException, SubjectNotFoundException, DuplicatedSubjectInStudentException;
 
-    Map<String,List<SubjectsGradeProjection>> getSubjectsGrade (Integer id) throws StudentNotFoundException;
+    Map<String,List<SubjectsGradeProjection>> getSubjectsGrade (Integer dni) throws StudentNotFoundException;
 }

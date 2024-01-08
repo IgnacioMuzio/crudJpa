@@ -55,8 +55,8 @@ public class StudentController {
         return new ResponseEntity<List<StudentSubject>>(studentService.addSubject(studentId,subjectId,grade),HttpStatus.CREATED);
     }
 
-    @GetMapping("/subjectgrade/{studentId}")
-    public ResponseEntity<Map<String,List<SubjectsGradeProjection>>> getSubjectGrades (@PathVariable("studentId") Integer studentId) throws StudentNotFoundException {
-        return new ResponseEntity<Map<String,List<SubjectsGradeProjection>>>(studentService.getSubjectsGrade(studentId),HttpStatus.OK);
+    @GetMapping("/subjectgrade/{studentDni}")
+    public ResponseEntity<Map<String,List<SubjectsGradeProjection>>> getSubjectGrades (@PathVariable("studentDni") Integer studentDni) throws StudentNotFoundException {
+        return new ResponseEntity<Map<String,List<SubjectsGradeProjection>>>(studentService.getSubjectsGrade(studentDni),HttpStatus.OK);
     }
 }
