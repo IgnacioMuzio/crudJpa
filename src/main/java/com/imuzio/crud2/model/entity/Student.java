@@ -1,11 +1,13 @@
 package com.imuzio.crud2.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -20,18 +22,13 @@ public class Student {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty(message = "FirstName is needed")
-    @Column(name="first_name")
     private String firstName;
 
-    @NotEmpty(message = "LastName is needed")
-    @Column(name="last_name")
     private String lastName;
 
-    @NotEmpty(message = "Dni is needed")
-    @Size(min = 8,max = 8)
-    private String dni;
+    private Integer dni;
 
     @OneToMany (mappedBy ="student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<StudentSubject> subjects;
+
 }

@@ -1,4 +1,4 @@
-package com.imuzio.crud2.model.entity.projection;
+package com.imuzio.crud2.projection;
 
 import org.springframework.beans.factory.annotation.Value;
 
