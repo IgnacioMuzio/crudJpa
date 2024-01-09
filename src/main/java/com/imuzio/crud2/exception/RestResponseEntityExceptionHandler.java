@@ -20,30 +20,26 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(StudentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorMessage> studentNotFoundException(StudentNotFoundException exception){
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND,exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    public ResponseEntity<String> studentNotFoundException(StudentNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
     @ExceptionHandler(SubjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorMessage> subjectNotFoundException(SubjectNotFoundException exception){
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND,exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    public ResponseEntity<String> subjectNotFoundException(SubjectNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
     @ExceptionHandler(DuplicatedDniStudentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorMessage> duplicatedDniStudentException(DuplicatedDniStudentException exception){
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    public ResponseEntity<String> duplicatedDniStudentException(DuplicatedDniStudentException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
     @ExceptionHandler(DuplicatedNameSubjectException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorMessage> duplicatedNameSubjectException(DuplicatedNameSubjectException exception){
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    public ResponseEntity<String> duplicatedNameSubjectException(DuplicatedNameSubjectException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
     @Override
@@ -57,15 +53,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(DuplicatedStudentInSubjectException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorMessage> duplicatedStudentInSubjectException(DuplicatedStudentInSubjectException exception){
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    public ResponseEntity<String> duplicatedStudentInSubjectException(DuplicatedStudentInSubjectException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
     @ExceptionHandler(DuplicatedSubjectInStudentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorMessage> duplicatedSubjectInStudentException(DuplicatedSubjectInStudentException exception){
-        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+    public ResponseEntity<String> duplicatedSubjectInStudentException(DuplicatedSubjectInStudentException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }
