@@ -1,6 +1,5 @@
 package com.imuzio.crud2.exception;
 
-import com.imuzio.crud2.message.ErrorMessage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

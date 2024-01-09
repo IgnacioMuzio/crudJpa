@@ -81,9 +81,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public void checkDni (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException{
-        List <Student> students = studentRepository.findAll();
-        for(Student student : students){
-            if(studentDto.getDni().equals(student.getDni()) && !Objects.equals(id, student.getId())){
+        Optional <Student> student = studentRepository.findByDni(studentDto.getDni());
+        if(student.isPresent()){
+            if(!Objects.equals(id, student.get().getId())){
                 throw new DuplicatedDniStudentException("Dni number already in use...");
             }
         }

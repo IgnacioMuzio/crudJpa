@@ -78,9 +78,9 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     public void checkName(SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException {
-        List <Subject> subjects = subjectRepository.findAll();
-        for(Subject subject : subjects){
-            if(subjectDto.getName().equals(subject.getName()) && !Objects.equals(id, subject.getId())){
+        Optional <Subject> subject = subjectRepository.findByName(subjectDto.getName());
+        if(subject.isPresent()){
+            if(!Objects.equals(id, subject.get().getId())){
                 throw new DuplicatedNameSubjectException("Subject name already in use...");
             }
         }
