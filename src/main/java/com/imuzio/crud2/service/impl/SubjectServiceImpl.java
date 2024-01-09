@@ -42,7 +42,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     public List<SubjectDto> getSubjects(){
         List<SubjectDto> subjectDtos = subjectRepository.findAll().stream().map(this::subjectDtoBuilder).toList();
-        subjectDtos.stream().forEach(subjectDto -> logger.info(subjectDto.getName()));
+        subjectDtos.stream().forEach(subjectDto -> logger.info(subjectDto.name()));
         return subjectDtos;
     }
 
@@ -59,14 +59,12 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject create (SubjectDto subjectDto) throws DuplicatedNameSubjectException {
         checkName(subjectDto,null);
         Subject subject = subjectBuilder(subjectDto,null);
-        logger.info("Subject created");
         return subjectRepository.save(subject);
     }
 
     public Subject update (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException {
         checkName(subjectDto,id);
         Subject subject = subjectBuilder(subjectDto,id);
-        logger.info("Subject updated");
         return subjectRepository.save(subject);
     }
 
@@ -75,10 +73,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     public SubjectDto subjectDtoBuilder(Subject subject){
-        SubjectDto subjectDto = new SubjectDto();
-
-        subjectDto.setName(subject.getName());
-
+        SubjectDto subjectDto = new SubjectDto(subject.getName());
         return subjectDto;
     }
 
@@ -86,13 +81,13 @@ public class SubjectServiceImpl implements SubjectService {
         Subject subject = new Subject();
 
         subject.setId(id);
-        subject.setName(subjectDto.getName());
+        subject.setName(subjectDto.name());
 
         return subject;
     }
 
     public void checkName(SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException {
-        Optional <Subject> subject = subjectRepository.findByName(subjectDto.getName());
+        Optional <Subject> subject = subjectRepository.findByName(subjectDto.name());
         logger.debug("Validating name");
         if(subject.isPresent()){
             if(!Objects.equals(id, subject.get().getId())){

@@ -40,7 +40,7 @@ public class StudentServiceImpl implements StudentService {
 
     public List <StudentDto> getStudents(){
         List <StudentDto> students = studentRepository.findAll().stream().map(this::studentDtoBuilder).toList();
-        students.stream().forEach(student -> logger.info(student.getFirstName() + " "  + student.getLastName()));
+        students.stream().forEach(student -> logger.info(student.firstName() + " "  + student.lastName()));
         return students;
     }
 
@@ -56,14 +56,12 @@ public class StudentServiceImpl implements StudentService {
     public Student create (StudentDto studentDto) throws DuplicatedDniStudentException {
         checkDni(studentDto,null);
         Student student = studentBuilder(studentDto,null);
-        logger.info("Student created");
         return studentRepository.save(student);
     }
 
     public Student update (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException {
         checkDni(studentDto,id);
         Student student = studentBuilder(studentDto,id);
-        logger.info("Student updated");
         return studentRepository.save(student);
     }
 
@@ -72,12 +70,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public StudentDto studentDtoBuilder(Student student){
-        StudentDto studentDto = new StudentDto();
-
-        studentDto.setFirstName(student.getFirstName());
-        studentDto.setLastName(student.getLastName());
-        studentDto.setDni(student.getDni());
-
+        StudentDto studentDto = new StudentDto(student.getFirstName(),student.getLastName(),student.getDni());
         return studentDto;
     }
 
@@ -85,15 +78,15 @@ public class StudentServiceImpl implements StudentService {
         Student student = new Student();
 
         student.setId(id);
-        student.setFirstName(studentDto.getFirstName());
-        student.setLastName(studentDto.getLastName());
-        student.setDni(studentDto.getDni());
+        student.setFirstName(studentDto.firstName());
+        student.setLastName(studentDto.lastName());
+        student.setDni(studentDto.dni());
 
         return student;
     }
 
     public void checkDni (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException{
-        Optional <Student> student = studentRepository.findByDni(studentDto.getDni());
+        Optional <Student> student = studentRepository.findByDni(studentDto.dni());
         logger.debug("Validating dni");
         if(student.isPresent()){
             if(!Objects.equals(id, student.get().getId())){

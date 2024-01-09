@@ -1,8 +1,6 @@
 package com.imuzio.crud2.repository;
 
-import com.imuzio.crud2.model.entity.Student;
 import com.imuzio.crud2.model.entity.StudentSubject;
-import com.imuzio.crud2.model.entity.Subject;
 import com.imuzio.crud2.projection.StudentsGradeProjection;
 import com.imuzio.crud2.projection.SubjectsGradeProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
