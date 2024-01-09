@@ -13,10 +13,16 @@ import com.imuzio.crud2.repository.StudentRepository;
 import com.imuzio.crud2.repository.StudentSubjectRepository;
 import com.imuzio.crud2.repository.SubjectRepository;
 import com.imuzio.crud2.service.StudentService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -30,28 +36,34 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentSubjectRepository studentSubjectRepository;
 
+    Logger logger = Logger.getLogger(StudentServiceImpl.class);
+
     public List <StudentDto> getStudents(){
-        return studentRepository.findAll().stream().map(this::studentDtoBuilder).toList();
+        List <StudentDto> students = studentRepository.findAll().stream().map(this::studentDtoBuilder).toList();
+        students.stream().forEach(student -> logger.info(student.getFirstName() + " "  + student.getLastName()));
+        return students;
     }
 
     public StudentDto getStudentById(Integer id) throws StudentNotFoundException{
         Optional<Student> student = studentRepository.findById(id);
-
         if(!student.isPresent()){
             throw new StudentNotFoundException("Student is not available");
         }
+        logger.info(student.get().getFirstName() + " "  + student.get().getLastName());
         return studentDtoBuilder(student.get());
     }
 
     public Student create (StudentDto studentDto) throws DuplicatedDniStudentException {
         checkDni(studentDto,null);
         Student student = studentBuilder(studentDto,null);
+        logger.info("Student created");
         return studentRepository.save(student);
     }
 
     public Student update (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException {
         checkDni(studentDto,id);
         Student student = studentBuilder(studentDto,id);
+        logger.info("Student updated");
         return studentRepository.save(student);
     }
 
@@ -82,11 +94,14 @@ public class StudentServiceImpl implements StudentService {
 
     public void checkDni (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException{
         Optional <Student> student = studentRepository.findByDni(studentDto.getDni());
+        logger.debug("Validating dni");
         if(student.isPresent()){
             if(!Objects.equals(id, student.get().getId())){
+                logger.error("Dni already in use");
                 throw new DuplicatedDniStudentException("Dni number already in use...");
             }
         }
+        logger.debug("Dni validated");
     }
 
     public List<StudentSubject> addSubject(Integer studentId, Integer subjectId, Float grade) throws StudentNotFoundException, SubjectNotFoundException, DuplicatedSubjectInStudentException {
@@ -103,7 +118,7 @@ public class StudentServiceImpl implements StudentService {
         student.getSubjects().add(studentSubject);
 
         studentRepository.save(student);
-
+        logger.info("Subject added to Student");
         return student.getSubjects();
     }
 
