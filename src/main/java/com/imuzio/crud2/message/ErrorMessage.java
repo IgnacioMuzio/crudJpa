@@ -1,4 +1,4 @@
-package com.imuzio.crud2.exceptions.dto;
+package com.imuzio.crud2.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

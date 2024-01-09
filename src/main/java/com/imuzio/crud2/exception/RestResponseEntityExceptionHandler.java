@@ -1,12 +1,10 @@
-package com.imuzio.crud2.exceptions;
+package com.imuzio.crud2.exception;
 
-import com.imuzio.crud2.exceptions.dto.ErrorMessage;
-import com.imuzio.crud2.model.entity.Subject;
+import com.imuzio.crud2.message.ErrorMessage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.metadata.HsqlTableMetaDataProvider;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,9 +1,9 @@
 package com.imuzio.crud2.Controller;
 
-import com.imuzio.crud2.exceptions.DuplicatedNameSubjectException;
-import com.imuzio.crud2.exceptions.DuplicatedSubjectInStudentException;
-import com.imuzio.crud2.exceptions.StudentNotFoundException;
-import com.imuzio.crud2.exceptions.SubjectNotFoundException;
+import com.imuzio.crud2.exception.DuplicatedNameSubjectException;
+import com.imuzio.crud2.exception.DuplicatedSubjectInStudentException;
+import com.imuzio.crud2.exception.StudentNotFoundException;
+import com.imuzio.crud2.exception.SubjectNotFoundException;
 import com.imuzio.crud2.model.dto.SubjectDto;
 import com.imuzio.crud2.model.entity.StudentSubject;
 import com.imuzio.crud2.model.entity.Subject;

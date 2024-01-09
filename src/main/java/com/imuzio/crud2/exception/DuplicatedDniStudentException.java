@@ -1,4 +1,4 @@
-package com.imuzio.crud2.exceptions;
+package com.imuzio.crud2.exception;
 
 public class DuplicatedDniStudentException extends Exception{
 
