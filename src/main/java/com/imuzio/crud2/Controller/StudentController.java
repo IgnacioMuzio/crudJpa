@@ -37,7 +37,7 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<Student> create(@Valid @RequestBody StudentDto studentDto) throws DuplicatedDniStudentException {
-        return new ResponseEntity<Student>(studentService.create(studentDto,null),HttpStatus.CREATED);
+        return new ResponseEntity<Student>(studentService.create(studentDto),HttpStatus.CREATED);
     }
 
     @PutMapping("/{studentId}")

@@ -44,7 +44,13 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectDtoBuilder(subject.get());
     }
 
-    public Subject save (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException {
+    public Subject create (SubjectDto subjectDto) throws DuplicatedNameSubjectException {
+        checkName(subjectDto,null);
+        Subject subject = subjectBuilder(subjectDto,null);
+        return subjectRepository.save(subject);
+    }
+
+    public Subject update (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException {
         checkName(subjectDto,id);
         Subject subject = subjectBuilder(subjectDto,id);
         return subjectRepository.save(subject);

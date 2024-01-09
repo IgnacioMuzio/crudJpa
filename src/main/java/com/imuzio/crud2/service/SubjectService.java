@@ -17,7 +17,8 @@ public interface SubjectService {
     List<SubjectDto> getSubjects();
 
     SubjectDto getSubjectById(Integer id) throws SubjectNotFoundException;
-    Subject save (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException;
+    Subject create (SubjectDto subjectDto) throws DuplicatedNameSubjectException;
+    Subject update (SubjectDto subjectDto, Integer id) throws DuplicatedNameSubjectException;
 
     void delete(Integer id);
 

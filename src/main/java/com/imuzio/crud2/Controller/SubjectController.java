@@ -36,12 +36,12 @@ public class SubjectController {
 
     @PostMapping
     public ResponseEntity<Subject> create(@Valid @RequestBody SubjectDto subjectDto) throws DuplicatedNameSubjectException {
-        return new ResponseEntity<Subject>(subjectService.save(subjectDto,null),HttpStatus.CREATED);
+        return new ResponseEntity<Subject>(subjectService.create(subjectDto),HttpStatus.CREATED);
     }
 
     @PutMapping("/{subjectId}")
     public ResponseEntity<Subject> update (@Valid @RequestBody SubjectDto subjectDto, @PathVariable("subjectId") Integer id) throws DuplicatedNameSubjectException {
-        return new ResponseEntity<Subject>(subjectService.save(subjectDto,id),HttpStatus.CREATED);
+        return new ResponseEntity<Subject>(subjectService.update(subjectDto,id),HttpStatus.OK);
     }
 
     @DeleteMapping("/{subjectId}")
