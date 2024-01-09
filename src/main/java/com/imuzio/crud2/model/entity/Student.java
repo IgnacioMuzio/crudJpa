@@ -1,6 +1,15 @@
 package com.imuzio.crud2.model.entity;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +27,7 @@ import java.util.List;
 public class Student {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name="first_name")
@@ -29,7 +38,7 @@ public class Student {
 
     private Integer dni;
 
-    @OneToMany (mappedBy ="student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<StudentSubject> subjects;
 
     public Student() {

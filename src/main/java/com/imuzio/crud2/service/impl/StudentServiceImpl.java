@@ -43,7 +43,13 @@ public class StudentServiceImpl implements StudentService {
         return studentDtoBuilder(student.get());
     }
 
-    public Student save (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException {
+    public Student create (StudentDto studentDto) throws DuplicatedDniStudentException {
+        checkDni(studentDto,null);
+        Student student = studentBuilder(studentDto,null);
+        return studentRepository.save(student);
+    }
+
+    public Student update (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException {
         checkDni(studentDto,id);
         Student student = studentBuilder(studentDto,id);
         return studentRepository.save(student);

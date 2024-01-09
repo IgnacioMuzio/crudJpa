@@ -18,7 +18,8 @@ public interface StudentService {
 
     StudentDto getStudentById(Integer id) throws StudentNotFoundException;
 
-    Student save (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException;
+    Student create (StudentDto studentDto) throws DuplicatedDniStudentException;
+    Student update (StudentDto studentDto, Integer id) throws DuplicatedDniStudentException;
 
     void delete(Integer id);
 

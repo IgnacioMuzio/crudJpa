@@ -37,12 +37,12 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<Student> create(@Valid @RequestBody StudentDto studentDto) throws DuplicatedDniStudentException {
-        return new ResponseEntity<Student>(studentService.save(studentDto,null),HttpStatus.CREATED);
+        return new ResponseEntity<Student>(studentService.create(studentDto,null),HttpStatus.CREATED);
     }
 
     @PutMapping("/{studentId}")
     public ResponseEntity<Student> update (@Valid @RequestBody StudentDto studentDto,@PathVariable("studentId") Integer id) throws DuplicatedDniStudentException {
-        return new ResponseEntity<Student>(studentService.save(studentDto,id),HttpStatus.CREATED);
+        return new ResponseEntity<Student>(studentService.update(studentDto,id),HttpStatus.OK);
     }
 
     @DeleteMapping("/{studentId}")
